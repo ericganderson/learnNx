@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "projects": {
+    "yodablog": {
+      "projectType": "application",
+      "root": "apps/yodablog",
+      "sourceRoot": "apps/yodablog/src",
+      "prefix": "learn-nx",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/yodablog",
+            "index": "apps/yodablog/src/index.html",
+            "main": "apps/yodablog/src/main.ts",
+            "polyfills": "apps/yodablog/src/polyfills.ts",
+            "tsConfig": "apps/yodablog/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/yodablog/src/favicon.ico",
+              "apps/yodablog/src/assets"
+            ],
+            "styles": ["apps/yodablog/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/yodablog/src/environments/environment.ts",
+                  "with": "apps/yodablog/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "yodablog:build:production"
+            },
+            "development": {
+              "browserTarget": "yodablog:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "yodablog:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/yodablog/src/**/*.ts",
+              "apps/yodablog/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/yodablog"],
+          "options": {
+            "jestConfig": "apps/yodablog/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "yodablog-e2e": {
+      "root": "apps/yodablog-e2e",
+      "sourceRoot": "apps/yodablog-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/yodablog-e2e/cypress.json",
+            "tsConfig": "apps/yodablog-e2e/tsconfig.e2e.json",
+            "devServerTarget": "yodablog:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "yodablog:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/yodablog-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "yodablog"
+}
